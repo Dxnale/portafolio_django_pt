@@ -48,6 +48,17 @@ Para cargar los datos iniciales de la aplicación desde excel a la base de datos
 ```bash
 python manage.py load_data
 ```
+## Configuración
+
+Asegúrate de que el archivo `config/django/base.py` esté configurado correctamente y que las variables de entorno necesarias estén definidas.
+
+## Carga de Datos
+
+Para cargar los datos iniciales de la aplicación desde excel a la base de datos, ejecuta el siguiente comando:
+
+```bash
+python manage.py load_data
+```
 
 ## Uso
 
@@ -94,6 +105,15 @@ python manage.py runserver
   }
   ```
 
+### Comparar Evolución API
+
+- **URL:** `/api/comparar-evolucion/`
+- **Método:** `GET`
+- **Descripción:** Compara la evolución de los portafolios en un rango de fechas.
+- **Parámetros:**
+  - `fecha_inicio` (date): Fecha de inicio.
+  - `fecha_fin` (date): Fecha de fin.
+
 ## Pruebas
 
 Para probar el endpoint `POST` de la API `Procesar Operación` desde PyCharm, crea un archivo `test_procesar_operacion.http` con el siguiente contenido:
@@ -115,4 +135,3 @@ Content-Type: application/json
 ## Licencia
 
 Este proyecto no está bajo ninguna licencia, es una prueba técnica :).
-```
