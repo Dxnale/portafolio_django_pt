@@ -9,7 +9,6 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from .models import Precio, Cantidad, Portafolio, Activo, Peso
-from .utils import extraer_valores_por_portafolio
 
 
 def obtener_valores(fecha_inicio, fecha_fin):
@@ -220,3 +219,31 @@ def comparar_evolucion(fecha_inicio, fecha_fin):
         'image_base64_p2': image_base64_p2,
     }
     return data
+
+
+def extraer_valores_por_portafolio(precios_por_fecha, cantidades_iniciales):
+    portafolio1_value = {}
+    portafolio2_value = {}
+
+    for precio in precios_por_fecha:
+        if precio.fecha not in portafolio1_value:
+            portafolio1_value[precio.fecha] = 0
+        try:
+            valor = precio.precio * cantidades_iniciales.get(
+                portafolio__nombre='portafolio 1',
+                activo=precio.activo).cantidad
+            portafolio1_value[precio.fecha] += valor
+        except Cantidad.DoesNotExist:
+            pass
+
+        if precio.fecha not in portafolio2_value:
+            portafolio2_value[precio.fecha] = 0
+        try:
+            valor = precio.precio * cantidades_iniciales.get(
+                portafolio__nombre='portafolio 2',
+                activo=precio.activo).cantidad
+            portafolio2_value[precio.fecha] += valor
+        except Cantidad.DoesNotExist:
+            pass
+
+    return portafolio1_value, portafolio2_value

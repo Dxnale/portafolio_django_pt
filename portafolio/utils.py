@@ -1,7 +1,6 @@
 from datetime import datetime
 from rest_framework.response import Response
 from rest_framework import status
-from portafolio.models import Cantidad
 
 
 def validar_fechas(fecha_inicio_str, fecha_fin_str):
@@ -25,30 +24,3 @@ def validar_fechas(fecha_inicio_str, fecha_fin_str):
 
     return fecha_inicio, fecha_fin
 
-
-def extraer_valores_por_portafolio(precios_por_fecha, cantidades_iniciales):
-    portafolio1_value = {}
-    portafolio2_value = {}
-
-    for precio in precios_por_fecha:
-        if precio.fecha not in portafolio1_value:
-            portafolio1_value[precio.fecha] = 0
-        try:
-            valor = precio.precio * cantidades_iniciales.get(
-                portafolio__nombre='portafolio 1',
-                activo=precio.activo).cantidad
-            portafolio1_value[precio.fecha] += valor
-        except Cantidad.DoesNotExist:
-            pass
-
-        if precio.fecha not in portafolio2_value:
-            portafolio2_value[precio.fecha] = 0
-        try:
-            valor = precio.precio * cantidades_iniciales.get(
-                portafolio__nombre='portafolio 2',
-                activo=precio.activo).cantidad
-            portafolio2_value[precio.fecha] += valor
-        except Cantidad.DoesNotExist:
-            pass
-
-    return portafolio1_value, portafolio2_value
